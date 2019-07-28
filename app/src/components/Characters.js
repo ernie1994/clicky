@@ -12,12 +12,12 @@ class Characters extends React.Component {
             { image: "gianthead", clicks: 0, key: 3 },
             { image: "goldenford", clicks: 0, key: 4 },
             { image: "jerry", clicks: 0, key: 5 },
-            { image: "jessica", clicks: 0, key: 5 },
-            { image: "meeseeks", clicks: 0, key: 6 },
-            { image: "morty", clicks: 0, key: 7 },
-            { image: "mr", clicks: 0, key: 8 },
-            { image: "rick", clicks: 0, key: 9 },
-            { image: "summer", clicks: 0, key: 10 },
+            { image: "jessica", clicks: 0, key: 6 },
+            { image: "meeseeks", clicks: 0, key: 7 },
+            { image: "morty", clicks: 0, key: 8 },
+            { image: "mr", clicks: 0, key: 9 },
+            { image: "rick", clicks: 0, key: 10 },
+            { image: "summer", clicks: 0, key: 11 },
         ]
     };
 
@@ -41,36 +41,44 @@ class Characters extends React.Component {
         );
     };
 
+    reset = () => {
+        this.props.reset();
+        this.setState({
+            characters: this.state.characters.map(char => {
+                char.clicks = 0;
+                return char;
+            })
+        });
+
+    };
+
     shuffle = charKey => {
         let character = this.state.characters.filter(character => character.key === charKey)[0];
 
         if (character.clicks === 0) {
             this.props.increaseScore();
-            this.setState({
-                characters: this.state.characters.map(char => {
-                    if (char.key === charKey) {
-                        char.clicks = 1;
+            this.setState(
+                {
+                    characters: this.state.characters.map(char => {
+                        if (char.key === charKey) {
+                            char.clicks = 1;
+                        }
+                        return char;
+                    })
+                },
+                function () {
+                    let allClicked = this.state.characters.reduce((total, value) => {
+                        if (value.clicks === 0) return false;
+                        return total;
+                    }, true);
+
+                    if (allClicked) {
+                        this.reset();
                     }
-                    return char;
-                })
-            })
-
+                }
+            );
         } else {
-            this.props.reset();
-            this.setState({
-                characters: this.state.characters.map(char => {
-                    char.clicks = 0;
-                    return char;
-                })
-            });
-        }
-
-        let allClicked = this.state.characters.reduce((_newVal, oldVal) => {
-            if (oldVal.clicks === 0) return false;
-        }, true);
-
-        if (allClicked) {
-            this.props.reset();
+            this.reset();
         }
 
         this.setState({

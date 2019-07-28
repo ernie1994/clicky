@@ -8,7 +8,8 @@ class Character extends React.Component {
                 style={{ width: "200px", height: "200px", cursor: "pointer" }}
                 className="img-fluid img-thumbnail"
                 onClick={() => this.props.shuffle(this.props.charKey)}
-                src={process.env.PUBLIC_URL + '/images/' + this.props.image + ".png"}>
+                src={process.env.PUBLIC_URL + '/images/' + this.props.image + ".png"}
+                alt={this.props.image}>
             </img>
         );
     }
